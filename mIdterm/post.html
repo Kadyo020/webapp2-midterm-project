@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .post-container {
+            max-width: 800px;
+            padding: 30px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #ff6b6b, #556270);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            color: #fff;
+        }
+
+        h1, h3 {
+            color: #fff;
+            text-align: center;
+        }
+
+        p {
+            color: #f0f0f0;
+            line-height: 1.6;
+        }
+
+        .loading {
+            text-align: center;
+            font-style: italic;
+            color: #ddd;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .post-details {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .back-button {
+            background-color: #ff8c00;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .back-button:hover {
+            background-color: #ff9f33;
+        }
+    </style>
+</head>
+<body>
+    <div class="post-container">
+        <h1>Post Page</h1>
+        <div id="postDetails" class="loading">Loading...</div>
+        <button class="back-button" onclick="goBack()">Back</button>
+    </div>
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get("id");
+
+            fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`)
+                .then(response => response.json())
+                .then(post => {
+                    const postDetails = document.getElementById("postDetails");
+                    postDetails.innerHTML = `
+                        <div class="post-details">
+                            <h3>Title: ${post.title}</h3>
+                            <p>Body: ${post.body}</p>
+                        </div>
+                    `;
+                    postDetails.classList.remove("loading");
+                })
+                .catch(error => console.error("Error fetching posts:", error));
+        });
+
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

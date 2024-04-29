@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f3f3f3;
+        }
+
+        .login-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 300px;
+        }
+
+        .login-header {
+            background: linear-gradient(to right, #007bff, #0062cc);
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .login-header h2 {
+            margin: 0;
+            font-weight: normal;
+        }
+
+        .login-form {
+            padding: 20px;
+        }
+
+        .form-input {
+            margin-bottom: 20px;
+            width: 100%;
+            border: none;
+            border-bottom: 2px solid #007bff;
+            outline: none;
+            padding: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            border-bottom: 2px solid #0062cc;
+        }
+
+        .form-button {
+            width: 100%;
+            background: linear-gradient(to right, #007bff, #0062cc);
+            color: #fff;
+            border: none;
+            outline: none;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h2>Login</h2>
+        </div>
+        <form class="login-form" id="loginForm">
+            <input type="text" id="username" class="form-input" placeholder="Enter username" required>
+            <input type="password" id="password" class="form-input" placeholder="Enter password" required>
+            <button type="submit" id="submit" class="form-button">Login</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            fetch("https://jsonplaceholder.typicode.com/users")
+                .then(response => response.json())
+                .then(users => {
+                    const user = users.find(user => user.username.toLowerCase() === username.toLowerCase());
+                    
+                    if (user) {
+                        if (password === "secret123") {
+                            window.location.href = "posts.html";
+                        } else {
+                            alert("Incorrect password!");
+                        }
+                    } else {
+                        alert("User not found!");
+                    }
+                })
+                .catch(error => {
+                    alert("Error fetching users:", error);
+                });
+        });
+    </script>
+</body>
+</html>
